@@ -1,0 +1,8 @@
+{
+  "name": "pesquisa-contabil",
+  "private": true,
+  "scripts": {
+    "start": "bun run server.ts",
+    "dev": "bun run --watch server.ts"
+  }
+}

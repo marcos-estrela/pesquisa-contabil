@@ -1,0 +1,351 @@
+<title>Formulário do Contábil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#f4f1e9; --surface:#fbf9f3; --field:#fffdf8;
+    --ink:#211f19; --soft:#494540; --muted:#736d62; --faint:#9c9588;
+    --line:#e3ddd0; --rule:#ece7db;
+    --accent:#3b6b52; --accent-soft:#4e7a63; --accent-bg:rgba(59,107,82,.09);
+    --accent-ink:#fff;
+    --gold:#8b6b1f; --gold-bg:rgba(166,124,40,.10); --gold-line:rgba(166,124,40,.28);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#16140f; --surface:#1e1b15; --field:#211d16;
+      --ink:#f0ece2; --soft:#cbc5b8; --muted:#968f81; --faint:#6b655a;
+      --line:#332f28; --rule:#2a2620;
+      --accent:#82ab8e; --accent-soft:#9dbfa7; --accent-bg:rgba(130,171,142,.13);
+      --accent-ink:#12140f;
+      --gold:#cba24e; --gold-bg:rgba(203,162,78,.10); --gold-line:rgba(203,162,78,.26);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#16140f; --surface:#1e1b15; --field:#211d16;
+    --ink:#f0ece2; --soft:#cbc5b8; --muted:#968f81; --faint:#6b655a;
+    --line:#332f28; --rule:#2a2620;
+    --accent:#82ab8e; --accent-soft:#9dbfa7; --accent-bg:rgba(130,171,142,.13);
+    --accent-ink:#12140f;
+    --gold:#cba24e; --gold-bg:rgba(203,162,78,.10); --gold-line:rgba(203,162,78,.26);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px; margin:0 auto; padding:44px 22px 60px}
+
+  .kicker{font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:14px}
+  h1{font-family:'Fraunces',serif; font-weight:600; font-size:2.4rem; line-height:1.05; margin:0 0 16px; letter-spacing:-.02em; text-wrap:balance}
+  .intro{font-size:1.06rem; color:var(--soft); max-width:62ch}
+  .intro b{color:var(--ink); font-weight:600}
+  .scope{margin-top:16px; background:var(--gold-bg); border:1px solid var(--gold-line); border-radius:11px; padding:13px 16px; font-size:.92rem; color:var(--soft)}
+  .scope b{color:var(--ink); font-weight:600}
+  .quem{margin-top:12px; font-size:.9rem; color:var(--muted)}
+  .quem b{color:var(--accent); font-weight:600}
+  .quem a{color:var(--accent); cursor:pointer; text-decoration:underline}
+  .okcard{display:flex; align-items:center; gap:14px; background:var(--accent-bg); border:1px solid var(--accent); border-radius:12px; padding:18px 20px}
+  .okmark{width:34px; height:34px; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center; font-weight:700; font-size:1.2rem; flex-shrink:0}
+  .prog{position:sticky; top:0; z-index:5; background:var(--paper); padding:12px 0 10px; margin-top:22px; border-bottom:1px solid var(--line)}
+  .prog .bar{height:7px; border-radius:5px; background:var(--rule); overflow:hidden}
+  .prog .fill{height:100%; width:0; background:var(--accent); transition:width .25s}
+  .prog .lbl{font-size:.8rem; color:var(--muted); margin-top:6px}
+
+  section{margin-top:38px}
+  .sh{display:flex; align-items:baseline; gap:12px; padding-bottom:10px; border-bottom:2px solid var(--accent-bg)}
+  .sh .n{font-family:'Fraunces',serif; font-size:1.2rem; font-weight:600; color:var(--accent); width:28px; flex-shrink:0}
+  .sh h2{font-family:'Fraunces',serif; font-weight:600; font-size:1.3rem; margin:0; letter-spacing:-.01em}
+
+  .q{margin-top:22px}
+  .q .ask{font-weight:600; color:var(--ink); margin-bottom:11px; font-size:1.02rem}
+  .q .ask .lim{font-weight:400; color:var(--faint); font-size:.85rem}
+
+  .opts{display:flex; flex-direction:column; gap:8px}
+  .opts.row{flex-direction:row; flex-wrap:wrap}
+  .opt{display:flex; align-items:center; gap:11px; border:1.5px solid var(--line); border-radius:10px; padding:11px 14px; font-size:.96rem; color:var(--soft); background:var(--surface); cursor:pointer; user-select:none; transition:border-color .12s, background .12s}
+  .opt:hover{border-color:var(--accent-soft)}
+  .opt .mk{width:20px; height:20px; border:2px solid var(--faint); flex-shrink:0; display:grid; place-items:center; transition:all .12s}
+  .opt.radio .mk{border-radius:50%}
+  .opt.check .mk{border-radius:6px}
+  .opt .mk::after{content:''; width:10px; height:10px; border-radius:inherit; background:var(--accent); transform:scale(0); transition:transform .12s}
+  .opt.sel{border-color:var(--accent); background:var(--accent-bg); color:var(--ink)}
+  .opt.sel .mk{border-color:var(--accent)}
+  .opt.sel .mk::after{transform:scale(1)}
+  .opt .other-in{flex:1; border:0; border-bottom:1px solid var(--line); background:transparent; color:var(--ink); font:inherit; font-size:.92rem; padding:2px 0; min-width:80px}
+  .opt .other-in:focus{outline:none; border-bottom-color:var(--accent)}
+
+  textarea{width:100%; border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:10px; padding:11px 13px; font:inherit; font-size:.96rem; resize:vertical; min-height:64px}
+  textarea:focus{outline:none; border-color:var(--accent)}
+
+  /* grid */
+  .grid{overflow-x:auto; border:1.5px solid var(--line); border-radius:10px; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; min-width:520px; font-size:.9rem}
+  th,td{padding:10px 6px; text-align:center; border-bottom:1px solid var(--rule)}
+  tr:last-child td{border-bottom:0}
+  th{font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; color:var(--faint); font-weight:600; vertical-align:bottom}
+  td:first-child,th:first-child{text-align:left; color:var(--ink); font-weight:500; white-space:nowrap; padding-left:14px}
+  .gmk{width:19px; height:19px; border:2px solid var(--faint); border-radius:50%; display:inline-grid; place-items:center; cursor:pointer; transition:border-color .12s}
+  .gmk::after{content:''; width:9px; height:9px; border-radius:50%; background:var(--accent); transform:scale(0); transition:transform .12s}
+  .gmk.sel{border-color:var(--accent)}
+  .gmk.sel::after{transform:scale(1)}
+
+  /* finish */
+  .finish{margin-top:46px; padding-top:26px; border-top:2px solid var(--accent-bg)}
+  .btn{font:inherit; font-size:1rem; font-weight:600; border:0; border-radius:11px; padding:14px 22px; cursor:pointer; background:var(--accent); color:var(--accent-ink)}
+  .btn.ghost{background:transparent; border:1.5px solid var(--line); color:var(--soft)}
+  .btn:disabled{opacity:.5; cursor:default}
+  .actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+  .out{margin-top:18px}
+  .out textarea{min-height:220px; font-family:ui-monospace,Menlo,monospace; font-size:.86rem}
+  .hint{font-size:.86rem; color:var(--muted); margin-top:10px}
+  .copied{color:var(--accent); font-weight:600}
+</style>
+
+<div class="wrap">
+  <div class="kicker">Pesquisa · Frente Contábil da Trama</div>
+  <h1>Formulário do Contábil</h1>
+  <p class="intro">Queremos entender, na prática, <b>quais informações você busca em cada demonstração contábil</b> — quando abre, o que olha primeiro, com que frequência e o que sente falta. É rápido, ~10 min. Não existe resposta certa.</p>
+  <div class="scope"><b>Pense nas empresas de serviço optantes pelo Simples Nacional que você atende</b> — clínicas, consultórios, prestadores PJ. As perguntas são sobre esse perfil <b>de modo geral</b>, não sobre uma empresa específica.</div>
+
+  <div class="prog"><div class="bar"><div class="fill" id="fill"></div></div><div class="lbl" id="plbl">0 de 0 respondidas</div></div>
+
+  <form id="f"></form>
+
+  <div class="finish">
+    <div class="actions">
+      <button type="button" class="btn" id="enviar">Enviar respostas</button>
+      <span class="hint" id="genhint" style="margin:0"></span>
+    </div>
+    <div class="out" id="ok" hidden>
+      <div class="okcard">
+        <div class="okmark">✓</div>
+        <div><b>Respostas enviadas!</b><div class="hint" style="margin-top:2px">Obrigado. Pode fechar esta página.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECOES = [
+  { n:'1', t:'Quais você usa, e com que frequência', qs:[
+    { id:'freq', tipo:'grid', ask:'Para cada demonstração, com que frequência você costuma abri-la nessas empresas?',
+      linhas:['Balancete','DRE (resultado)','Balanço Patrimonial','Fluxo de Caixa (DFC)','Mutações do PL (DMPL)','Notas Explicativas'],
+      cols:['Mensal','Trimestral','Anual','Só quando preciso','Nunca'] },
+  ]},
+  { n:'2', t:'Balancete', qs:[
+    { id:'bal_uso', tipo:'check', max:2, ask:'Quando abre o balancete, é principalmente para:', lim:'(marque até 2)',
+      opts:['Conferir se fecha (débito = crédito)','Ver o que se moveu no mês','Caçar erro de lançamento','Base para gerar balanço/DRE','__outro'] },
+    { id:'bal_olho', tipo:'texto', ask:'O que você olha PRIMEIRO nele? E o que costuma ignorar?' },
+    { id:'bal_modo', tipo:'radio', ask:'Você usa a visão do mês ou a acumulada?', opts:['Do mês','Acumulada','As duas, depende'] },
+  ]},
+  { n:'3', t:'DRE', qs:[
+    { id:'dre_uso', tipo:'check', max:2, ask:'Quando abre a DRE, é principalmente para:', lim:'(marque até 2)',
+      opts:['Ver o lucro do período','Conferir a receita','Analisar uma despesa específica','Mostrar para o sócio','__outro'] },
+    { id:'dre_linha', tipo:'texto', ask:'Que linha você olha primeiro? (ex.: receita, lucro líquido, uma despesa)' },
+    { id:'dre_comp', tipo:'check', ask:'Você compara a DRE com algum período?', lim:'(marque todas)',
+      opts:['Mês anterior','Mesmo mês do ano passado','Acumulado do ano','Orçado/previsto','Não comparo'] },
+    { id:'dre_quem', tipo:'check', ask:'Quem mais vê essa DRE além de você?', lim:'(marque todas)',
+      opts:['O sócio','Banco/terceiro','Ninguém','__outro'] },
+  ]},
+  { n:'4', t:'Balanço Patrimonial', qs:[
+    { id:'bp_freq', tipo:'radio', ask:'Com que frequência você abre o balanço (não o balancete) dessas empresas?',
+      opts:['Mensal','Trimestral','Anual','Só quando preciso'] },
+    { id:'bp_gatilho', tipo:'check', ask:'O que te leva a abrir o balanço?', lim:'(marque todas)',
+      opts:['Fechamento anual','Distribuição de lucro','Pedido de banco/crédito','Entrada/saída de sócio','Conferência de rotina','__outro'] },
+    { id:'bp_data', tipo:'radio', ask:'Quando abre, a data que você quer ver normalmente é:',
+      opts:['Posição de hoje','Último dia do mês atual','31/12 do ano passado','Uma data específica, sob demanda'] },
+    { id:'bp_comp', tipo:'radio', ask:'Você olha o balanço de uma data sozinho, ou comparado com outra?',
+      opts:['Sozinho','Comparado com 31/12 do ano anterior','Comparado com o mesmo mês do ano passado','__outro'] },
+    { id:'bp_contas', tipo:'texto', ask:'Quais contas ou grupos você confere primeiro no balanço?' },
+  ]},
+  { n:'5', t:'Fechamento', qs:[
+    { id:'fech_tempo', tipo:'radio', ask:'Tempo médio para fechar o mês de uma dessas empresas hoje:',
+      opts:['Menos de 1h','1 a 3h','Meio dia','1 dia ou mais'] },
+    { id:'fech_tempo2', tipo:'check', max:2, ask:'O que mais consome tempo no fechamento?', lim:'(marque até 2)',
+      opts:['Conciliação bancária','Classificar lançamentos','Conferir impostos','Ajustes/reclassificações','Montar as peças','__outro'] },
+    { id:'fech_sinal', tipo:'texto', ask:'Como você sabe que o mês "fechou"?' },
+  ]},
+  { n:'6', t:'Distribuição de lucro isento', qs:[
+    { id:'dist_rot', tipo:'radio', ask:'Entra na sua rotina com essas empresas?', opts:['Sim, recorrente','Sim, esporádico','Não'] },
+    { id:'dist_freq', tipo:'radio', ask:'Você levanta balanço/demonstração para justificar uma distribuição? Com que frequência?',
+      opts:['Toda distribuição','Algumas vezes por ano','Só no fechamento anual','Não levanto'] },
+    { id:'dist_como', tipo:'texto', ask:'Como você decide o quanto pode ser distribuído isento?' },
+  ]},
+  { n:'7', t:'Quem recebe e como', qs:[
+    { id:'rec_quem', tipo:'check', ask:'Quem recebe as demonstrações prontas?', lim:'(marque todas)',
+      opts:['O sócio','Banco','Receita / ECD','Ninguém além de mim'] },
+    { id:'rec_fmt', tipo:'check', ask:'Em que formato você entrega?', lim:'(marque todas)',
+      opts:['PDF','Excel','Arquivo da ECD','Impresso'] },
+    { id:'rec_ger', tipo:'texto', ask:'O sócio pede algum relatório gerencial diferente da peça formal? O quê?' },
+  ]},
+  { n:'8', t:'Dores e confiança', qs:[
+    { id:'dor_manual', tipo:'texto', ask:'O que na contabilidade dessas empresas te dá mais trabalho manual hoje?' },
+    { id:'dor_confere', tipo:'texto', ask:'Tem algo que você sempre confere duas vezes ou não confia de primeira? O quê?' },
+    { id:'dor_pronto', tipo:'texto', ask:'Que informação você gostaria de bater o olho e já ver pronta, que hoje tem que caçar ou calcular na mão?' },
+  ]},
+  { n:'9', t:'Confiança e automação', qs:[
+    { id:'aut_assinar', tipo:'texto', ask:'Para assinar uma demonstração SEM revisar tudo, você precisaria confiar que…' },
+    { id:'aut_nao', tipo:'texto', ask:'O que um sistema NÃO deveria fazer sozinho — onde você quer, obrigatoriamente, decidir você mesma?' },
+  ]},
+];
+
+const respostas = {};
+const form = document.getElementById('f');
+
+function el(tag, cls, txt){ const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; }
+
+SECOES.forEach(sec=>{
+  const s = el('section');
+  const sh = el('div','sh'); sh.append(el('span','n',sec.n), el('h2',null,sec.t)); s.append(sh);
+  sec.qs.forEach(q=>{
+    const wrap = el('div','q');
+    const ask = el('div','ask'); ask.textContent = q.ask;
+    if(q.lim){ const l=el('span','lim',' '+q.lim); ask.append(l); }
+    wrap.append(ask);
+
+    if(q.tipo==='texto'){
+      const ta=el('textarea'); ta.placeholder='Escreva aqui…';
+      ta.addEventListener('input',()=>{ respostas[q.id]=ta.value.trim()||null; upd(); });
+      wrap.append(ta);
+    } else if(q.tipo==='grid'){
+      respostas[q.id]={};
+      const box=el('div','grid'); const tb=el('table');
+      const thead=el('thead'); const htr=el('tr'); htr.append(el('th',null,'Demonstração'));
+      q.cols.forEach(c=>htr.append(el('th',null,c))); thead.append(htr); tb.append(thead);
+      const tbody=el('tbody');
+      q.linhas.forEach(lin=>{
+        const tr=el('tr'); tr.append(el('td',null,lin));
+        q.cols.forEach(c=>{
+          const td=el('td'); const m=el('span','gmk');
+          m.addEventListener('click',()=>{
+            tr.querySelectorAll('.gmk').forEach(x=>x.classList.remove('sel'));
+            m.classList.add('sel'); respostas[q.id][lin]=c; upd();
+          });
+          td.append(m); tr.append(td);
+        });
+        tbody.append(tr);
+      });
+      tb.append(tbody); box.append(tb); wrap.append(box);
+    } else {
+      respostas[q.id] = q.tipo==='check' ? [] : null;
+      const box=el('div','opts'+(q.opts.length<=4 && q.tipo==='radio'?' ':''));
+      q.opts.forEach(op=>{
+        const isOutro = op==='__outro';
+        const o=el('label','opt '+(q.tipo==='radio'?'radio':'check'));
+        const mk=el('span','mk'); o.append(mk);
+        if(isOutro){
+          const lab=el('span',null,'Outro: '); o.append(lab);
+          const inp=el('input','other-in'); inp.placeholder='qual?'; inp.type='text';
+          inp.addEventListener('input',()=>{ if(o.classList.contains('sel')) setVal(q,o,'Outro: '+inp.value.trim()); });
+          inp.addEventListener('focus',()=>{ if(!o.classList.contains('sel')) o.click(); });
+          o.append(inp); o.dataset.other='1'; o._inp=inp;
+        } else {
+          o.append(el('span',null,op));
+        }
+        o.dataset.val = isOutro ? '' : op;
+        o.addEventListener('click',(e)=>{
+          if(e.target.classList.contains('other-in')) return;
+          toggle(q,o,box);
+        });
+        box.append(o);
+      });
+      if(q.max){ const note=el('div','hint'); note.style.marginTop='6px'; note.dataset.note=q.id; box.append(note); }
+      wrap.append(box);
+    }
+    s.append(wrap);
+  });
+  form.append(s);
+});
+
+function setVal(q,o,val){ // for 'outro' text update on radio/check
+  if(q.tipo==='radio'){ respostas[q.id]=val; }
+  else { const arr=respostas[q.id].filter(v=>!v.startsWith('Outro:')); if(val)arr.push(val); respostas[q.id]=arr; }
+  upd();
+}
+function toggle(q,o,box){
+  if(q.tipo==='radio'){
+    box.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+    o.classList.add('sel');
+    respostas[q.id] = o.dataset.other ? 'Outro: '+(o._inp.value.trim()) : o.dataset.val;
+    if(o.dataset.other) o._inp.focus();
+  } else {
+    o.classList.toggle('sel');
+    // Guarda à prova de falha: se passou do limite, desfaz e avisa.
+    if(q.max && box.querySelectorAll('.opt.sel').length > q.max){
+      o.classList.remove('sel');
+      const note=box.querySelector('[data-note]');
+      if(note){ note.textContent='Você já marcou '+q.max+'. Desmarque uma para trocar.'; note.classList.add('copied'); setTimeout(()=>{note.textContent='';note.classList.remove('copied');},2200); }
+      return;
+    }
+    if(o.classList.contains('sel') && o.dataset.other) o._inp.focus();
+    const vals=[]; box.querySelectorAll('.opt.sel').forEach(x=>{
+      vals.push(x.dataset.other ? 'Outro: '+(x._inp.value.trim()) : x.dataset.val);
+    });
+    respostas[q.id]=vals;
+  }
+  upd();
+}
+
+const totalQ = SECOES.reduce((a,s)=>a+s.qs.length,0);
+function respondida(v){ if(v==null)return false; if(Array.isArray(v))return v.length>0; if(typeof v==='object')return Object.keys(v).length>0; return String(v).trim().length>0; }
+function upd(){
+  let n=0; Object.values(respostas).forEach(v=>{ if(respondida(v))n++; });
+  const pct=Math.round(n/totalQ*100);
+  document.getElementById('fill').style.width=pct+'%';
+  document.getElementById('plbl').textContent=n+' de '+totalQ+' respondidas';
+}
+upd();
+
+// Quem está respondendo: vem do ?de= da URL (link por pessoa); editável.
+let respondente = '';
+(function(){
+  const p = new URLSearchParams(location.search).get('de');
+  if(p){ respondente = p.trim(); const q=document.getElementById('quem'); document.getElementById('quem-nome').textContent = respondente; q.hidden=false;
+    document.getElementById('quem-troca').addEventListener('click',()=>{
+      const novo = prompt('Seu nome:', respondente); if(novo && novo.trim()){ respondente=novo.trim(); document.getElementById('quem-nome').textContent=respondente; }
+    });
+  }
+})();
+
+// Monta o objeto de respostas com os RÓTULOS legíveis (o e-mail sai claro).
+function coletar(){
+  const out = {};
+  SECOES.forEach(sec=>{
+    sec.qs.forEach(q=>{
+      const v = respostas[q.id];
+      const vazio = v==null || (Array.isArray(v)&&!v.length) || (typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length);
+      const chave = sec.n+'. '+q.ask;
+      if(vazio){ out[chave]='(sem resposta)'; }
+      else if(q.tipo==='grid'){ out[chave]=Object.fromEntries(q.linhas.map(l=>[l, v[l]||'—'])); }
+      else if(Array.isArray(v)){ out[chave]=v.join(', '); }
+      else { out[chave]=v; }
+    });
+  });
+  return out;
+}
+
+const btn = document.getElementById('enviar');
+const gh = document.getElementById('genhint');
+btn.addEventListener('click', async ()=>{
+  if(!respondente){
+    const novo = prompt('Antes de enviar — qual é o seu nome?');
+    if(!novo || !novo.trim()){ gh.textContent='Preciso do seu nome para enviar.'; return; }
+    respondente = novo.trim();
+  }
+  btn.disabled = true; gh.textContent = 'Enviando…';
+  try{
+    const r = await fetch('enviar', {
+      method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({ respondente, respostas: coletar() })
+    });
+    if(!r.ok) throw new Error('http '+r.status);
+    document.getElementById('f').hidden = true;
+    document.querySelector('.finish').hidden = true;
+    document.getElementById('ok').hidden = false;
+    document.getElementById('ok').scrollIntoView({behavior:'smooth', block:'center'});
+  }catch(e){
+    btn.disabled = false;
+    gh.textContent = 'Não consegui enviar agora — tente de novo em instantes.';
+  }
+});
+</script>
