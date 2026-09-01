@@ -106,6 +106,7 @@
   <h1>Formulário do Contábil</h1>
   <p class="intro">Queremos entender, na prática, <b>quais informações você busca em cada demonstração contábil</b> — quando abre, o que olha primeiro, com que frequência e o que sente falta. É rápido, ~10 min. Não existe resposta certa.</p>
   <div class="scope"><b>Pense nas empresas de serviço optantes pelo Simples Nacional que você atende</b> — clínicas, consultórios, prestadores PJ. As perguntas são sobre esse perfil <b>de modo geral</b>, não sobre uma empresa específica.</div>
+  <div class="quem" id="quem" hidden>Respondendo como <b id="quem-nome"></b>. <a id="quem-troca">corrigir</a></div>
 
   <div class="prog"><div class="bar"><div class="fill" id="fill"></div></div><div class="lbl" id="plbl">0 de 0 respondidas</div></div>
 
@@ -300,11 +301,14 @@ upd();
 let respondente = '';
 (function(){
   const p = new URLSearchParams(location.search).get('de');
-  if(p){ respondente = p.trim(); const q=document.getElementById('quem'); document.getElementById('quem-nome').textContent = respondente; q.hidden=false;
-    document.getElementById('quem-troca').addEventListener('click',()=>{
-      const novo = prompt('Seu nome:', respondente); if(novo && novo.trim()){ respondente=novo.trim(); document.getElementById('quem-nome').textContent=respondente; }
-    });
-  }
+  if(!p) return;
+  respondente = p.trim();
+  const q=document.getElementById('quem'), nome=document.getElementById('quem-nome'), troca=document.getElementById('quem-troca');
+  if(nome) nome.textContent = respondente;
+  if(q) q.hidden = false;
+  if(troca) troca.addEventListener('click',()=>{
+    const novo = prompt('Seu nome:', respondente); if(novo && novo.trim()){ respondente=novo.trim(); if(nome) nome.textContent=respondente; }
+  });
 })();
 
 // Monta o objeto de respostas com os RÓTULOS legíveis (o e-mail sai claro).
