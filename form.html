@@ -133,13 +133,13 @@ const SECOES = [
       cols:['Mensal','Trimestral','Anual','Só quando preciso','Nunca'] },
   ]},
   { n:'2', t:'Balancete', qs:[
-    { id:'bal_uso', tipo:'check', max:2, ask:'Quando abre o balancete, é principalmente para:', lim:'(marque até 2)',
+    { id:'bal_uso', tipo:'check', ask:'Quando abre o balancete, é principalmente para:', lim:'(marque todas)',
       opts:['Conferir se fecha (débito = crédito)','Ver o que se moveu no mês','Caçar erro de lançamento','Base para gerar balanço/DRE','__outro'] },
     { id:'bal_olho', tipo:'texto', ask:'O que você olha PRIMEIRO nele? E o que costuma ignorar?' },
     { id:'bal_modo', tipo:'radio', ask:'Você usa a visão do mês ou a acumulada?', opts:['Do mês','Acumulada','As duas, depende'] },
   ]},
   { n:'3', t:'DRE', qs:[
-    { id:'dre_uso', tipo:'check', max:2, ask:'Quando abre a DRE, é principalmente para:', lim:'(marque até 2)',
+    { id:'dre_uso', tipo:'check', ask:'Quando abre a DRE, é principalmente para:', lim:'(marque todas)',
       opts:['Ver o lucro do período','Conferir a receita','Analisar uma despesa específica','Mostrar para o sócio','__outro'] },
     { id:'dre_linha', tipo:'texto', ask:'Que linha você olha primeiro? (ex.: receita, lucro líquido, uma despesa)' },
     { id:'dre_comp', tipo:'check', ask:'Você compara a DRE com algum período?', lim:'(marque todas)',
@@ -161,7 +161,7 @@ const SECOES = [
   { n:'5', t:'Fechamento', qs:[
     { id:'fech_tempo', tipo:'radio', ask:'Tempo médio para fechar o mês de uma dessas empresas hoje:',
       opts:['Menos de 1h','1 a 3h','Meio dia','1 dia ou mais'] },
-    { id:'fech_tempo2', tipo:'check', max:2, ask:'O que mais consome tempo no fechamento?', lim:'(marque até 2)',
+    { id:'fech_tempo2', tipo:'check', ask:'O que mais consome tempo no fechamento?', lim:'(marque todas)',
       opts:['Conciliação bancária','Classificar lançamentos','Conferir impostos','Ajustes/reclassificações','Montar as peças','__outro'] },
     { id:'fech_sinal', tipo:'texto', ask:'Como você sabe que o mês "fechou"?' },
   ]},
