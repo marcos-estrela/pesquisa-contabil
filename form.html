@@ -331,6 +331,12 @@ function coletar(){
 const btn = document.getElementById('enviar');
 const gh = document.getElementById('genhint');
 btn.addEventListener('click', async ()=>{
+  const nRespondidas = Object.values(respostas).filter(respondida).length;
+  if(nRespondidas === 0){
+    gh.textContent = 'Responda ao menos uma pergunta antes de enviar.';
+    document.querySelector('.prog').scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
   if(!respondente){
     const novo = prompt('Antes de enviar — qual é o seu nome?');
     if(!novo || !novo.trim()){ gh.textContent='Preciso do seu nome para enviar.'; return; }
